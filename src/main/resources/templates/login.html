@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Iniciar sesión</title>
+  <style>
+    body { font-family: Arial; padding: 2em; background-color: #eef; }
+    form { background: white; padding: 2em; max-width: 400px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px #aaa; }
+    input, button { width: 100%; margin-top: 1em; padding: 0.5em; }
+    .error { color: red; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Inicia sesión para reservar</h2>
+  <form th:action="@{/login}" method="post">
+    <input type="hidden" name="idSesion" th:value="${idSesion}" />
+    <label for="email">Correo electrónico:</label>
+    <input type="email" name="email" required />
+
+    <label for="password">Contraseña:</label>
+    <input type="password" name="password" required />
+
+    <button type="submit">Reservar</button>
+
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+  </form>
+</body>
+</html>

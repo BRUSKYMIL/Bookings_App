@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Buscar sesiones</title>
+  <style>
+    body { font-family: Arial; padding: 2em; background-color: #f0f0f0; }
+    form { background: white; padding: 2em; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 0 10px #ccc; }
+    input, button { margin-top: 1em; width: 100%; padding: 0.5em; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Buscar sesiones disponibles</h2>
+  <form th:action="@{/buscar}" method="post">
+    <label for="fecha">Fecha:</label>
+    <input type="date" id="fecha" name="fecha" required />
+    <button type="submit">Buscar</button>
+  </form>
+</body>
+</html>

@@ -1,7 +1,7 @@
 package com.reservas.app.service;
 
-import com.reservas.app.entity.Session;
 import com.reservas.app.entity.AppUser;
+import com.reservas.app.entity.Session;
 import com.reservas.app.repository.SessionRepository;
 import com.reservas.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +14,23 @@ import java.util.List;
 public class SessionService {
 
     @Autowired
-    private SessionRepository sesionRepo;
+    private SessionRepository sessionRepo;
 
     @Autowired
-    private UserRepository usuarioRepo;
+    private UserRepository userRepo;
 
-    public List<Session> obtenerDisponiblesPorFecha(LocalDate fecha) {
-        return sesionRepo.findByFecha(fecha);
+    public List<Session> getBookingsByDate(LocalDate date) {
+        return sessionRepo.findByDate(date);
     }
 
-    public void reservarSesion(Long idSesion, String emailUsuario) {
-        Session sesion = sesionRepo.findById(idSesion).orElseThrow();
-        AppUser usuario = usuarioRepo.findByEmail(emailUsuario).orElseThrow();
+    public void bookSession(Long sessionId, String email) {
+        Session session = sessionRepo.findById(sessionId).orElseThrow();
+        AppUser user = userRepo.findByEmail(email).orElseThrow();
 
-        if (sesion.getSpots() <= 0) throw new RuntimeException("No hay plazas disponibles");
+        if (session.getSpots() <= 0) throw new RuntimeException("No hay plazas disponibles");
 
-        sesion.getInscritos().add(usuario);
-        sesion.setSpots(sesion.getSpots() - 1);
-        sesionRepo.save(sesion);
+        session.getBooked().add(user);
+        session.setSpots(session.getSpots() - 1);
+        sessionRepo.save(session);
     }
 }

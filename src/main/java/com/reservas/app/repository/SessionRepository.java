@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
-    List<Session> findByFecha(LocalDate fecha);
+    List<Session> findByDate(LocalDate date);
 }

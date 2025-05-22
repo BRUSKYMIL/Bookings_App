@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Reserva completada</title>
+  <style>
+    body { font-family: Arial; background-color: #e9ffe9; padding: 2em; text-align: center; }
+    .box { background: white; display: inline-block; padding: 2em; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>¡Reserva confirmada!</h2>
+    <p th:text="${mensaje}">Mensaje</p>
+    <a href="/" style="margin-top:1em; display:inline-block;">Volver al inicio</a>
+  </div>
+</body>
+</html>

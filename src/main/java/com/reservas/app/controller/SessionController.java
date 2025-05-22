@@ -5,7 +5,6 @@ import com.reservas.app.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,15 +13,15 @@ import java.util.List;
 public class SessionController {
 
     @Autowired
-    private SessionService sesionService;
+    private SessionService sessionService;
 
     @GetMapping("/disponibles")
-    public List<Session> listarDisponibles(@RequestParam("fecha") String fecha) {
-        return sesionService.obtenerDisponiblesPorFecha(LocalDate.parse(fecha));
+    public List<Session> getByDate(@RequestParam("fecha") String date) {
+        return sessionService.getBookingsByDate(LocalDate.parse(date));
     }
 
-    @PostMapping("/reservar/{idSesion}")
-    public void reservar(@PathVariable Long idSesion, Principal principal) {
-        sesionService.reservarSesion(idSesion, principal.getName());
+    @PostMapping("/reservar/{id}")
+    public void reservar(@PathVariable Long id, @RequestParam String email) {
+        sessionService.bookSession(id, email);
     }
 }
