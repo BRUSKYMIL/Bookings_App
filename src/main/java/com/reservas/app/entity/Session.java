@@ -1,11 +1,22 @@
 package com.reservas.app.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "sessions")
@@ -24,7 +35,12 @@ public class Session {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+
+    @Column(nullable = false)
     private int spots;
+
+    @Column(nullable = false)
+    private double price;
 
     @ManyToMany
     @JoinTable(
@@ -32,5 +48,5 @@ public class Session {
         joinColumns = @JoinColumn(name = "session_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<AppUser> booked; // Usuarios inscritos
+    private List<AppUser> booked;
 }

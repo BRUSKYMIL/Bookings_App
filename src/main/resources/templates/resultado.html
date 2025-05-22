@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <title>Sesiones disponibles</title>
   <style>
-    body { font-family: Arial; padding: 2em; background-color: #f9f9f9; }
-    .session-list { max-width: 600px; margin: auto; background: white; padding: 2em; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    .session { margin-bottom: 1em; padding: 1em; border: 1px solid #ddd; border-radius: 5px; }
-    button { margin-top: 1em; padding: 0.5em; }
+    body {
+      font-family: Arial;
+      padding: 2em;
+      background-color: #f9f9f9;
+    }
+
+    .session-list {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    .session {
+      margin-bottom: 1em;
+      padding: 1em;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 1em;
+      padding: 0.5em;
+    }
   </style>
 </head>
+
 <body>
   <h2 style="text-align:center;">Sesiones para <span th:text="${fecha}"></span></h2>
 
@@ -23,10 +47,13 @@
       <p>Horario: <span th:text="${s.startTime}"></span> - <span th:text="${s.endTime}"></span></p>
       <p>Plazas disponibles: <span th:text="${s.spots}"></span></p>
 
-      <form th:action="@{'/login'(id=${s.id})}" method="get">
+      <form th:action="@{/registro}" method="get" style="display:inline;">
+        <input type="hidden" th:name="sessionId" th:value="${s.id}" />
         <button type="submit">Reservar</button>
       </form>
+
     </div>
   </div>
 </body>
+
 </html>

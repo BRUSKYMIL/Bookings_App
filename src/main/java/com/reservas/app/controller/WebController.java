@@ -1,18 +1,20 @@
 package com.reservas.app.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.reservas.app.entity.AppUser;
 import com.reservas.app.entity.Session;
 import com.reservas.app.service.SessionService;
 import com.reservas.app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class WebController {
@@ -36,29 +38,31 @@ public class WebController {
         return "resultado";
     }
 
-    @GetMapping("/login")
-    public String loginForm(@RequestParam("id") Long idSesion, Model model) {
-        model.addAttribute("idSesion", idSesion);
-        return "login";
+    @GetMapping("/registro")
+    public String mostrarFormularioRegistro(@RequestParam("sessionId") Long sessionId, Model model) {
+        model.addAttribute("sessionId", sessionId);
+        return "registro";
     }
 
-    @PostMapping("/login")
-    public String procesarLogin(
-            @RequestParam String email,
-            @RequestParam String password,
-            @RequestParam Long idSesion,
+    @PostMapping("/registro")
+    public String procesarRegistro(
+            @RequestParam("sessionId") Long sessionId,
+            @RequestParam("name") String name,
+            @RequestParam("surname") String surname,
+            @RequestParam("email") String email,
             Model model
     ) {
-        Optional<AppUser> optionalUser = userService.searchByEmail(email);
+        Optional<AppUser> existing = userService.searchByEmail(email);
 
-        if (optionalUser.isPresent() && optionalUser.get().getPassword().equals(password)) {
-            sessionService.bookSession(idSesion, email);
-            model.addAttribute("mensaje", "Reserva completada correctamente.");
-            return "exito";
-        } else {
-            model.addAttribute("error", "Credenciales incorrectas");
-            model.addAttribute("idSesion", idSesion);
-            return "login";
-        }
+        AppUser user = existing.orElseGet(() -> {
+            AppUser nuevo = new AppUser();
+            nuevo.setName(name + " " + surname);
+            nuevo.setEmail(email);
+            return userService.saveUser(nuevo);
+        });
+
+        sessionService.bookSession(sessionId, user.getEmail());
+        model.addAttribute("usuario", user);
+        return "ticket";
     }
 }
