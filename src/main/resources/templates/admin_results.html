@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Resultados de búsqueda</title>
+  <style>
+    body { font-family: Arial; background-color: #f9f9f9; padding: 2em; }
+    .result-box { background: white; padding: 2em; border-radius: 10px; box-shadow: 0 0 10px #ccc; max-width: 600px; margin: auto; }
+    .booking { border-bottom: 1px solid #eee; padding: 1em 0; }
+    .booking:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="result-box">
+    <h2>Resultados de búsqueda</h2>
+    <div th:if="${bookings.empty}">
+      <p>No se encontraron reservas.</p>
+    </div>
+    <div th:each="b : ${bookings}" class="booking">
+      <p><strong>Nº Reserva:</strong> <span th:text="${b.bookingNumber}"></span></p>
+      <p><strong>Nombre:</strong> <span th:text="${b.user.name}"></span> <span th:text="${b.user.surname}"></span></p>
+      <p><strong>Email:</strong> <span th:text="${b.user.email}"></span></p>
+      <p><strong>Sesión:</strong> <span th:text="${b.session.name}"></span></p>
+      <p><strong>Fecha de reserva:</strong> <span th:text="${#temporals.format(b.bookingDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+    </div>
+  </div>
+</body>
+</html>

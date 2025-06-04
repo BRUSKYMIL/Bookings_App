@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.reservas.app.entity.AppUser;
+import com.reservas.app.entity.Booking;
 import com.reservas.app.entity.Session;
 import com.reservas.app.service.SessionService;
 import com.reservas.app.service.UserService;
@@ -61,8 +62,10 @@ public class WebController {
             return userService.saveUser(nuevo);
         });
 
-        sessionService.bookSession(sessionId, user.getEmail());
+        Booking booking = sessionService.bookSession(sessionId, user.getEmail());
+
         model.addAttribute("usuario", user);
+        model.addAttribute("booking", booking);
         return "ticket";
     }
 }

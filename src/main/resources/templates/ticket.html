@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Confirmación de Reserva</title>
@@ -12,37 +11,23 @@
             margin-top: 50px;
             background-color: #fefefe;
         }
-
-        .ticket h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .ticket p {
-            font-size: 1.1rem;
-        }
-
-        @media print {
-            button {
-                display: none;
-            }
-        }
+        .ticket h2 { text-align: center; margin-bottom: 20px; }
+        .ticket p { font-size: 1.1rem; }
+        @media print { button { display: none; } }
     </style>
 </head>
-
 <body class="bg-light">
     <div class="container">
         <div class="ticket shadow mt-5 mx-auto" style="max-width: 600px;">
             <h2>🎟️ Confirmación de Reserva</h2>
-            <p><strong>Nombre:</strong> <span th:text="${usuario.name}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+            <p><strong>Nombre:</strong> <span th:text="${usuario != null ? usuario.name : ''}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${usuario != null ? usuario.email : ''}"></span></p>
+            <p><strong>Nº de reserva:</strong> <span th:text="${booking != null ? booking.bookingNumber : ''}"></span></p>
             <p class="mt-4">Tu plaza ha sido reservada correctamente. Presenta este comprobante el día de la sesión.</p>
         </div>
-
         <div class="text-center mt-4">
             <button class="btn btn-outline-primary" onclick="window.print()">🖨️ Imprimir Ticket</button>
         </div>
     </div>
 </body>
-
 </html>
