@@ -1,11 +1,20 @@
 package com.reservas.app.repository;
 
-import com.reservas.app.entity.Booking;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.reservas.app.entity.Booking;
+
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByUserNameContainingIgnoreCaseAndUserSurnameContainingIgnoreCase(String name, String surname);
-    Optional<Booking> findByBookingNumber(Long bookingNumber);
+    // Suma todas las plazas reservadas en una sesión (puede devolver null si no hay reservas)
+    @Query("SELECT COALESCE(SUM(b.seats), 0) FROM Booking b WHERE b.session.id = :sessionId")
+    Integer sumSeatsBySessionId(@Param("sessionId") Long sessionId);
+
+    Optional<Booking> findByBookingCode(Long bookingCode);
+    List<Booking> findByUser_NameIgnoreCaseAndUser_SurnameIgnoreCase(String name, String surname);
+    boolean existsByUserIdAndSessionId(Long userId, Long sessionId);
 }

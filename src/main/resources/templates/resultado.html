@@ -1,59 +1,33 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <title>Sesiones disponibles</title>
-  <style>
-    body {
-      font-family: Arial;
-      padding: 2em;
-      background-color: #f9f9f9;
-    }
-
-    .session-list {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 2em;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
-    }
-
-    .session {
-      margin-bottom: 1em;
-      padding: 1em;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    button {
-      margin-top: 1em;
-      padding: 0.5em;
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/resultado.css}">
 </head>
+<body class="bg-light">
+  <div class="container py-5">
+    <h2 class="text-center mb-4">📅 Sesiones para <span th:text="${fecha}"></span></h2>
 
-<body>
-  <h2 style="text-align:center;">Sesiones para <span th:text="${fecha}"></span></h2>
-
-  <div class="session-list">
-    <div th:if="${sesiones.empty}">
-      <p>No hay sesiones disponibles para esa fecha.</p>
+    <div th:if="${sesiones.empty}" class="alert alert-warning text-center">
+      No hay sesiones disponibles para esa fecha.
     </div>
 
-    <div th:each="s : ${sesiones}" class="session">
-      <p><strong th:text="${s.name}">Nombre</strong></p>
-      <p>Profesor: <span th:text="${s.teacher}"></span></p>
-      <p>Horario: <span th:text="${s.startTime}"></span> - <span th:text="${s.endTime}"></span></p>
-      <p>Plazas disponibles: <span th:text="${s.spots}"></span></p>
-
-      <form th:action="@{/registro}" method="get" style="display:inline;">
-        <input type="hidden" th:name="sessionId" th:value="${s.id}" />
-        <button type="submit">Reservar</button>
-      </form>
-
+    <div class="session-list">
+      <div th:each="s : ${sesiones}" class="card session-card">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${s.name}">Nombre</h5>
+          <p class="card-text mb-1">👨‍🏫 Profesor: <span th:text="${s.teacher}"></span></p>
+          <p class="card-text mb-1">🕒 Horario: <span th:text="${s.startTime}"></span> - <span th:text="${s.endTime}"></span></p>
+          <p class="card-text">💺 Plazas disponibles: <span th:text="${s.spots}"></span></p>
+          <form th:action="@{/registro}" method="get">
+            <input type="hidden" th:name="sessionId" th:value="${s.id}" />
+            <button type="submit" class="btn btn-outline-primary w-100 mt-2">Reservar</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </body>
-
 </html>

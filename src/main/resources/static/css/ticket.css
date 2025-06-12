@@ -1,0 +1,18 @@
+.ticket {
+  max-width: 600px;
+  background: white;
+  border-radius: 1rem;
+  border-left: 10px solid #0d6efd;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}

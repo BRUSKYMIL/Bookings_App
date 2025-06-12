@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reservas.app.entity.AppUser;
-import com.reservas.app.repository.UserRepository;
+import com.reservas.app.repository.AppUserRepository;
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserRepository userRepo;
+    private AppUserRepository userRepo;
 
     public Optional<AppUser> searchByEmail(String email) {
         return userRepo.findByEmail(email);

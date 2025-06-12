@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Gestión de reserva</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/manage_booking.css}">
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+  <div class="manage-box card shadow-lg p-4">
+    <h2 class="text-center mb-4">🎫 Tu Ticket de Reserva</h2>
+
+    <ul class="list-group list-group-flush mb-4">
+      <li class="list-group-item"><strong>Nº de reserva:</strong> <span th:text="${booking.bookingCode}"></span></li>
+      <li class="list-group-item"><strong>Sesión:</strong> <span th:text="${booking.session.name}"></span></li>
+      <li class="list-group-item"><strong>Fecha:</strong> <span th:text="${booking.session.date}"></span></li>
+      <li class="list-group-item"><strong>Número de plazas:</strong> <span th:text="${booking.seats}"></span></li>
+      <li class="list-group-item"><strong>Precio total:</strong> <span th:text="${booking.totalPrice} + ' €'"></span></li>
+    </ul>
+
+    <h4 class="mb-3">Modificar plazas</h4>
+    <form th:action="@{/booking/updateSeats}" method="post" class="mb-4">
+      <input type="hidden" name="code" th:value="${booking.bookingCode}" />
+      <div class="input-group">
+        <input type="number" name="seats" th:value="${booking.seats}" class="form-control" min="1" required>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+      </div>
+    </form>
+
+    <h4 class="mb-3">Cancelar reserva</h4>
+    <form th:action="@{/booking/cancel}" method="post">
+      <input type="hidden" name="code" th:value="${booking.bookingCode}" />
+      <button type="submit" class="btn btn-outline-danger w-100" onclick="return confirm('¿Seguro que deseas cancelar tu reserva?')">Cancelar reserva</button>
+    </form>
+
+    <p class="text-success mt-3 text-center" th:if="${mensaje}" th:text="${mensaje}"></p>
+    <div class="text-center mt-3">
+      <a th:href="@{/}" class="btn btn-link">Volver al inicio</a>
+    </div>
+  </div>
+</body>
+</html>

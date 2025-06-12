@@ -1,41 +1,39 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Registro</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <meta charset="UTF-8">
+  <title>Registro de Reserva</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/registro.css}">
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="card mx-auto shadow" style="max-width: 500px;">
-            <div class="card-body">
-                <h3 class="card-title text-center mb-4">Registro de Usuario</h3>
-                <form th:action="@{/registro}" method="post">
-                    <input type="hidden" name="sessionId" th:value="${sessionId}" />
-
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="surname" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="surname" name="surname" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Confirmar registro y reservar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+<body class="bg-gradient">
+  <div class="container auth-container d-flex justify-content-center align-items-center vh-100">
+    <div class="card auth-card shadow-lg">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4">📝 Registro de Reserva</h2>
+        <form th:action="@{/registro}" method="post">
+          <input type="hidden" th:name="sessionId" th:value="${sessionId}">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" required>
+            <label for="name">Nombre</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="surname" name="surname" placeholder="Apellido" required>
+            <label for="surname">Apellido</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
+            <label for="email">Correo electrónico</label>
+          </div>
+          <div class="form-floating mb-4">
+            <input type="number" class="form-control" id="seats" name="seats" min="1" value="1" placeholder="Plazas" required>
+            <label for="seats">Número de plazas</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Reservar Ahora</button>
+        </form>
+      </div>
     </div>
-
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  </div>
 </body>
 </html>

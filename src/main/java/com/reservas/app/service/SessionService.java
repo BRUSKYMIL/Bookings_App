@@ -2,50 +2,54 @@ package com.reservas.app.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.reservas.app.entity.AppUser;
 import com.reservas.app.entity.Booking;
 import com.reservas.app.entity.Session;
+import com.reservas.app.repository.AppUserRepository;
 import com.reservas.app.repository.BookingRepository;
 import com.reservas.app.repository.SessionRepository;
-import com.reservas.app.repository.UserRepository;
 
 @Service
 public class SessionService {
 
     @Autowired
-    private SessionRepository sessionRepo;
-
-    @Autowired
-    private UserRepository userRepo;
-
+    private SessionRepository sessionRepository;
     @Autowired
     private BookingRepository bookingRepository;
-
-    public List<Session> getBookingsByDate(LocalDate date) {
-        return sessionRepo.findByDate(date);
-    }
+    @Autowired
+    private AppUserRepository appUserRepository;
 
     public Booking bookSession(Long sessionId, String email) {
-        Session session = sessionRepo.findById(sessionId).orElseThrow();
-        AppUser user = userRepo.findByEmail(email).orElseThrow();
+        Session session = sessionRepository.findById(sessionId).orElseThrow();
+        AppUser user = appUserRepository.findByEmail(email).orElseThrow();
 
-        // Para bookingNumber incremental:
-        Long maxBookingNumber = bookingRepository.findAll().stream()
-                .mapToLong(b -> b.getBookingNumber() != null ? b.getBookingNumber() : 0L)
-                .max().orElse(0L);
+        if (bookingRepository.existsByUserIdAndSessionId(user.getId(), sessionId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sesión ya reservada por el usuario");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        String codeString = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Long bookingCode = Long.valueOf(codeString);
 
         Booking booking = Booking.builder()
                 .user(user)
                 .session(session)
-                .bookingNumber(maxBookingNumber + 1)
+                .bookingCode(bookingCode)
                 .bookingDate(LocalDateTime.now())
                 .build();
 
         return bookingRepository.save(booking);
+    }
+
+    public List<Session> getBookingsByDate(LocalDate date) {
+        return sessionRepository.findByDate(date);
     }
 }

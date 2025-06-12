@@ -36,11 +36,11 @@ public class Session {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    @Column(nullable = false)
-    private int spots;
+    @Column(name = "price_per_seat", nullable = false)
+    private double pricePerSeat;
 
     @Column(nullable = false)
-    private double price;
+    private int spots;
 
     @ManyToMany
     @JoinTable(

@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Resultados de búsqueda</title>
-  <style>
-    body { font-family: Arial; background-color: #f9f9f9; padding: 2em; }
-    .result-box { background: white; padding: 2em; border-radius: 10px; box-shadow: 0 0 10px #ccc; max-width: 600px; margin: auto; }
-    .booking { border-bottom: 1px solid #eee; padding: 1em 0; }
-    .booking:last-child { border-bottom: none; }
-  </style>
+    <title>Resultados de búsqueda</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
-  <div class="result-box">
     <h2>Resultados de búsqueda</h2>
-    <div th:if="${bookings.empty}">
-      <p>No se encontraron reservas.</p>
+    <div th:if="${bookings != null and !bookings.empty}">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="b : ${bookings}">
+                    <td th:text="${b.bookingCode}"></td>
+                    <td th:text="${b.user.name}"></td>
+                    <td th:text="${b.user.surname}"></td>
+                    <td th:text="${b.user.email}"></td>
+                    <td>
+                        <form th:action="@{/admin/deleteBooking}" method="post" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${b.id}" />
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que quieres cancelar esta reserva?');">Cancelar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div th:each="b : ${bookings}" class="booking">
-      <p><strong>Nº Reserva:</strong> <span th:text="${b.bookingNumber}"></span></p>
-      <p><strong>Nombre:</strong> <span th:text="${b.user.name}"></span> <span th:text="${b.user.surname}"></span></p>
-      <p><strong>Email:</strong> <span th:text="${b.user.email}"></span></p>
-      <p><strong>Sesión:</strong> <span th:text="${b.session.name}"></span></p>
-      <p><strong>Fecha de reserva:</strong> <span th:text="${#temporals.format(b.bookingDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <div th:if="${bookings == null or bookings.empty}">
+        <p>No se encontraron reservas.</p>
     </div>
-  </div>
 </body>
 </html>
